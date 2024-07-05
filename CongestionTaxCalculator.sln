@@ -1,0 +1,70 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.11.34929.205
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{D4F98613-E4BF-4D95-B0A9-B8DF21ACEF5D}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CongestionTaxCalculator.Api", "src\CongestionTaxCalculator.Api\CongestionTaxCalculator.Api.csproj", "{C83D6A7A-E90C-430C-8B8E-65CAD14773C4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CongestionTaxCalculator.Application", "src\CongestionTaxCalculator.Application\CongestionTaxCalculator.Application.csproj", "{3A59C2ED-8007-4AFA-853B-5DE0C8104373}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CongestionTaxCalculator.Domain", "src\CongestionTaxCalculator.Domain\CongestionTaxCalculator.Domain.csproj", "{9561DCED-401D-4289-B2EF-E21A87F7BF02}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CongestionTaxCalculator.Infrastructure", "src\CongestionTaxCalculator.Infrastructure\CongestionTaxCalculator.Infrastructure.csproj", "{B6A2C53A-733F-49D2-97B8-8D84C4E0A155}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CongestionTaxCalculator.Contracts", "src\CongestionTaxCalculator.Contracts\CongestionTaxCalculator.Contracts.csproj", "{7A5D1D78-0D1D-4C8D-B367-62FDEE289261}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "congestion-tax-calculator-net-core", "src\CongestionTaxCalculator.Student\congestion-tax-calculator-net-core.csproj", "{640660D3-EE7C-4DFC-8712-73A49CA21527}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{A74C7E66-6AEF-4307-AF44-5E4D78E53298}"
+	ProjectSection(SolutionItems) = preProject
+		..\Backend Technical Test\Backend Technical Test\ASSIGNMENT.md = ..\Backend Technical Test\Backend Technical Test\ASSIGNMENT.md
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C83D6A7A-E90C-430C-8B8E-65CAD14773C4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C83D6A7A-E90C-430C-8B8E-65CAD14773C4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C83D6A7A-E90C-430C-8B8E-65CAD14773C4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C83D6A7A-E90C-430C-8B8E-65CAD14773C4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3A59C2ED-8007-4AFA-853B-5DE0C8104373}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3A59C2ED-8007-4AFA-853B-5DE0C8104373}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3A59C2ED-8007-4AFA-853B-5DE0C8104373}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3A59C2ED-8007-4AFA-853B-5DE0C8104373}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9561DCED-401D-4289-B2EF-E21A87F7BF02}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9561DCED-401D-4289-B2EF-E21A87F7BF02}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9561DCED-401D-4289-B2EF-E21A87F7BF02}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9561DCED-401D-4289-B2EF-E21A87F7BF02}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B6A2C53A-733F-49D2-97B8-8D84C4E0A155}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B6A2C53A-733F-49D2-97B8-8D84C4E0A155}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B6A2C53A-733F-49D2-97B8-8D84C4E0A155}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B6A2C53A-733F-49D2-97B8-8D84C4E0A155}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7A5D1D78-0D1D-4C8D-B367-62FDEE289261}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7A5D1D78-0D1D-4C8D-B367-62FDEE289261}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7A5D1D78-0D1D-4C8D-B367-62FDEE289261}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7A5D1D78-0D1D-4C8D-B367-62FDEE289261}.Release|Any CPU.Build.0 = Release|Any CPU
+		{640660D3-EE7C-4DFC-8712-73A49CA21527}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{640660D3-EE7C-4DFC-8712-73A49CA21527}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{640660D3-EE7C-4DFC-8712-73A49CA21527}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{640660D3-EE7C-4DFC-8712-73A49CA21527}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{C83D6A7A-E90C-430C-8B8E-65CAD14773C4} = {D4F98613-E4BF-4D95-B0A9-B8DF21ACEF5D}
+		{3A59C2ED-8007-4AFA-853B-5DE0C8104373} = {D4F98613-E4BF-4D95-B0A9-B8DF21ACEF5D}
+		{9561DCED-401D-4289-B2EF-E21A87F7BF02} = {D4F98613-E4BF-4D95-B0A9-B8DF21ACEF5D}
+		{B6A2C53A-733F-49D2-97B8-8D84C4E0A155} = {D4F98613-E4BF-4D95-B0A9-B8DF21ACEF5D}
+		{7A5D1D78-0D1D-4C8D-B367-62FDEE289261} = {D4F98613-E4BF-4D95-B0A9-B8DF21ACEF5D}
+		{640660D3-EE7C-4DFC-8712-73A49CA21527} = {D4F98613-E4BF-4D95-B0A9-B8DF21ACEF5D}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {373DDC2F-E56A-4C3A-8167-8D03053652DC}
+	EndGlobalSection
+EndGlobal
