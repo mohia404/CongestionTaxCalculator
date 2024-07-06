@@ -1,9 +1,16 @@
+using CongestionTaxCalculator.Api.Endpoints;
+using CongestionTaxCalculator.Application;
+using CongestionTaxCalculator.Infrastructure;
+using CongestionTaxCalculator.Infrastructure.Data;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services
+    .AddApplication()
+    .AddInfrastructure(builder.Configuration);
 
 var app = builder.Build();
 
@@ -14,31 +21,24 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+var hostEnvironment = app.Services.GetService<IWebHostEnvironment>();
+var loggerFactory = app.Services.GetRequiredService<ILoggerFactory>();
+var logger = loggerFactory.CreateLogger(nameof(app));
+logger.LogInformation($"Starting in environment {hostEnvironment.EnvironmentName}");
+try
+{
+    using var scope = app.Services.CreateScope();
+    var services = scope.ServiceProvider;
+    var seedService = services.GetRequiredService<AppDbContextSeed>();
+    await seedService.SeedAsync(DateTime.Now);
+}
+catch (Exception ex)
+{
+    logger.LogError(ex, "An error occurred seeding the DB.");
+}
+
 app.UseHttpsRedirection();
 
-var summaries = new[]
-{
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-};
-
-app.MapGet("/weatherforecast", () =>
-{
-    var forecast = Enumerable.Range(1, 5).Select(index =>
-        new WeatherForecast
-        (
-            DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-            Random.Shared.Next(-20, 55),
-            summaries[Random.Shared.Next(summaries.Length)]
-        ))
-        .ToArray();
-    return forecast;
-})
-.WithName("GetWeatherForecast")
-.WithOpenApi();
+app.MapCityEndpoints();
 
 app.Run();
-
-internal record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-}

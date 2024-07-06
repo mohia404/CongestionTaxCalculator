@@ -12,10 +12,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Endpoints\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\CongestionTaxCalculator.Contracts\CongestionTaxCalculator.Contracts.csproj" />
     <ProjectReference Include="..\CongestionTaxCalculator.Infrastructure\CongestionTaxCalculator.Infrastructure.csproj" />
   </ItemGroup>
