@@ -16,20 +16,22 @@ public class TaxRulesPerYear : Entity<TaxRulesId>
     private readonly List<FixedCongestionTaxAmount> fixedCongestionTaxAmounts = [];
     public IReadOnlyList<FixedCongestionTaxAmount> FixedCongestionTaxAmounts => fixedCongestionTaxAmounts.AsReadOnly();
 
-    private readonly List<Vehicle> taxFreeVehicle = [];
-    public IReadOnlyList<Vehicle> TaxFreeVehicles => taxFreeVehicle.AsReadOnly();
+    private readonly List<Vehicle> taxFreeVehicles = [];
+    public IReadOnlyList<Vehicle> TaxFreeVehicles => taxFreeVehicles.AsReadOnly();
 
-    private TaxRulesPerYear(TaxRulesId id, int year, DateTime[] taxFreeDays, int maximumTaxPerDay, int singleChargeDurationMinutes) : base(id)
+    private TaxRulesPerYear(TaxRulesId id, int year, DateTime[] taxFreeDays, List<Vehicle> taxFreeVehicles, List<FixedCongestionTaxAmount> fixedCongestionTaxAmounts, int maximumTaxPerDay, int singleChargeDurationMinutes) : base(id)
     {
         Year = year;
         TaxFreeDays = taxFreeDays;
+        this.taxFreeVehicles = taxFreeVehicles;
+        this.fixedCongestionTaxAmounts = fixedCongestionTaxAmounts;
         MaximumTaxPerDay = maximumTaxPerDay;
         SingleChargeDurationMinutes = singleChargeDurationMinutes;
     }
 
-    public static TaxRulesPerYear Create(int year, DateTime[] taxFreeDays, int maximumTaxPerDay, int singleChargeDurationMinutes)
+    public static TaxRulesPerYear Create(int year, DateTime[] taxFreeDays, List<Vehicle> taxFreeVehicles, List<FixedCongestionTaxAmount> fixedCongestionTaxAmounts, int maximumTaxPerDay, int singleChargeDurationMinutes)
     {
-        return new TaxRulesPerYear(TaxRulesId.CreateUnique(), year, taxFreeDays, maximumTaxPerDay, singleChargeDurationMinutes);
+        return new TaxRulesPerYear(TaxRulesId.CreateUnique(), year, taxFreeDays, taxFreeVehicles, fixedCongestionTaxAmounts, maximumTaxPerDay, singleChargeDurationMinutes);
     }
 
     public bool IsVehicleTaxFree(Vehicle vehicle)
@@ -42,7 +44,7 @@ public class TaxRulesPerYear : Entity<TaxRulesId>
 
     public bool IsTaxFreeDay(DateTime dateTime)
     {
-        if (TaxFreeDays.Contains(dateTime))
+        if (TaxFreeDays.Any(x=>x <= dateTime && dateTime < x.AddDays(1)))
             return true;
 
         return false;

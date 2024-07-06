@@ -1,6 +1,18 @@
-@CongestionTaxCalculator.Api_HostAddress = http://localhost:5000
+@CongestionTaxCalculator_Api_HostAddress = https://localhost:7239
 
-GET {{CongestionTaxCalculator.Api_HostAddress}}/weatherforecast/
+POST {{CongestionTaxCalculator_Api_HostAddress}}/api/cities/calculate-tax
 Accept: application/json
+Content-Type: application/json
+
+{
+  "cityName": "Gothenburg",
+  "vehicleName": "string",
+  "datePassesToll": [
+    "2013-07-06T14:47:32.638Z",
+    "2013-07-06T15:49:32.638Z",
+    "2013-08-07T15:49:32.638Z"
+
+  ]
+}
 
 ###

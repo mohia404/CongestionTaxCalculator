@@ -39,13 +39,13 @@ public class CityConfig : IEntityTypeConfiguration<City>
         builder.OwnsMany(x => x.TaxRulesPerYears, taxRulesBuilder =>
         {
             taxRulesBuilder
-                .ToTable("TaxRules");
+                .ToTable("TaxRulesPerYears");
 
             taxRulesBuilder
                 .WithOwner()
-                .HasForeignKey("TaxRulesId");
+                .HasForeignKey("CityId");
 
-            taxRulesBuilder.HasKey(nameof(City.Id), "TaxRulesId");
+            taxRulesBuilder.HasKey(nameof(TaxRulesPerYear.Id));
 
             taxRulesBuilder
                 .Property(p => p.Id)
@@ -53,6 +53,10 @@ public class CityConfig : IEntityTypeConfiguration<City>
                 .HasConversion(
                     id => id.Value,
                     value => TaxRulesId.Create(value));
+
+            taxRulesBuilder
+                .Property(s => s.Year)
+                .IsRequired();
 
             taxRulesBuilder.Property(e => e.TaxFreeDays)
             .HasConversion(
@@ -63,38 +67,39 @@ public class CityConfig : IEntityTypeConfiguration<City>
 
             taxRulesBuilder.OwnsMany(y => y.TaxFreeVehicles, ConfigureTaxFreeVehiclesTable);
             taxRulesBuilder.OwnsMany(y => y.FixedCongestionTaxAmounts, ConfigureFixedCongestionTaxAmountsTable);
+
         });
 
         builder.Metadata
-            .FindNavigation(nameof(TaxRulesPerYear.TaxFreeVehicles))!
-            .SetPropertyAccessMode(PropertyAccessMode.Field);
-
-        builder.Metadata
-            .FindNavigation(nameof(TaxRulesPerYear.FixedCongestionTaxAmounts))!
+            .FindNavigation(nameof(City.TaxRulesPerYears))!
             .SetPropertyAccessMode(PropertyAccessMode.Field);
     }
 
-    private static void ConfigureTaxFreeVehiclesTable(OwnedNavigationBuilder<TaxRulesPerYear, Vehicle> productBuilder)
+    private static void ConfigureTaxFreeVehiclesTable(OwnedNavigationBuilder<TaxRulesPerYear, Vehicle> builder)
     {
-        productBuilder
+        builder
             .WithOwner()
-            .HasForeignKey("CityId", "TaxRulesId");
+            .HasForeignKey("TaxRulesId");
 
-        productBuilder
+        builder
             .ToTable("TaxFreeVehicles");
 
-        productBuilder.HasKey(nameof(Vehicle.Name), "CityId", "TaxRulesId");
+        builder.HasKey(nameof(Vehicle.Name), "TaxRulesId");
     }
 
-    private static void ConfigureFixedCongestionTaxAmountsTable(OwnedNavigationBuilder<TaxRulesPerYear, FixedCongestionTaxAmount> productBuilder)
+    private static void ConfigureFixedCongestionTaxAmountsTable(OwnedNavigationBuilder<TaxRulesPerYear, FixedCongestionTaxAmount> builder)
     {
-        productBuilder
+        builder
             .WithOwner()
-            .HasForeignKey("CityId", "TaxRulesId");
+            .HasForeignKey("TaxRulesId");
 
-        productBuilder
+        builder
             .ToTable("FixedCongestionTaxAmounts");
 
-        productBuilder.HasKey(nameof(FixedCongestionTaxAmount.FromTime), nameof(FixedCongestionTaxAmount.ToTime), "CityId", "TaxRulesId");
+        builder
+            .Property(s => s.TaxAmount)
+            .IsRequired();
+
+        builder.HasKey(nameof(FixedCongestionTaxAmount.FromTime), nameof(FixedCongestionTaxAmount.ToTime), "TaxRulesId");
     }
 }

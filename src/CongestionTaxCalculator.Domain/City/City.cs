@@ -25,11 +25,13 @@ public class City : AggregateRoot<CityId, int>
 
     public int GetTax(Vehicle vehicle, DateTime[] datePassesToll)
     {
-        var validYear = 2013;
-        if (datePassesToll.Any(x => x.Year != validYear))
-            throw new InvalidYearException();
+        var dateYears = datePassesToll.Select(x => x.Year).Distinct().ToArray()
+            ?? throw new InvalidYearException();
 
-        var taxRulesPerYear = TaxRulesPerYears.FirstOrDefault(x => x.Year == validYear)
+        if (dateYears.Length != 1)
+            throw new MoreThanOneYearCalculationException();
+
+        var taxRulesPerYear = TaxRulesPerYears.FirstOrDefault(x => x.Year == dateYears!.First())
             ?? throw new TaxRulesNotFoundException();
 
         if (taxRulesPerYear.IsVehicleTaxFree(vehicle))
@@ -47,7 +49,7 @@ public class City : AggregateRoot<CityId, int>
         for (int i = 0; i < datePassesToll.Length; i++)
         {
             if (taxRulesPerYear.IsTaxFreeDay(datePassesToll[i]))
-                break;
+                continue;
 
             var tax = taxRulesPerYear.GetFixedTimeTaxAmount(TimeOnly.FromDateTime(datePassesToll[i]));
 

@@ -45,10 +45,30 @@ public class AppDbContextSeed
                 var monthOfJuly = GetDatesBetweenTwoDates(new DateTime(2013, 7, 1), new DateTime(2013, 7, 31));
 
                 DateTime[] taxFreeDays = [.. holidays, .. dayBeforeHolidays, .. weekends, .. monthOfJuly];
+                List<Vehicle> taxFreeVehicles = [
+                        Vehicle.Create("Emergency vehicle"),
+                        Vehicle.Create("Diplomat vehicle"),
+                        Vehicle.Create("Motorcycle"),
+                        Vehicle.Create("Military vehicle"),
+                        Vehicle.Create("Foreign vehicle")
+                    ];
+
+                List<FixedCongestionTaxAmount> fixedCongestionTaxAmounts = [
+                        FixedCongestionTaxAmount.Create(new TimeOnly(6, 0),new TimeOnly(6, 29), 8),
+                        FixedCongestionTaxAmount.Create(new TimeOnly(6, 30),new TimeOnly(6, 59), 13),
+                        FixedCongestionTaxAmount.Create(new TimeOnly(7, 0),new TimeOnly(7, 59), 18),
+                        FixedCongestionTaxAmount.Create(new TimeOnly(8, 0),new TimeOnly(8, 29), 13),
+                        FixedCongestionTaxAmount.Create(new TimeOnly(8, 30),new TimeOnly(14, 59), 8),
+                        FixedCongestionTaxAmount.Create(new TimeOnly(15, 0),new TimeOnly(15, 29), 13),
+                        FixedCongestionTaxAmount.Create(new TimeOnly(15, 30),new TimeOnly(16, 59), 18),
+                        FixedCongestionTaxAmount.Create(new TimeOnly(17, 00),new TimeOnly(17, 59), 13),
+                        FixedCongestionTaxAmount.Create(new TimeOnly(18, 00),new TimeOnly(18, 29), 8),
+                        FixedCongestionTaxAmount.Create(new TimeOnly(18, 30),new TimeOnly(5, 59), 0)
+                    ];
 
                 #endregion
 
-                var taxRules = TaxRulesPerYear.Create(year, taxFreeDays, 60, 60);
+                var taxRules = TaxRulesPerYear.Create(year, taxFreeDays, taxFreeVehicles, fixedCongestionTaxAmounts, 60, 60);
                 var city = City.Create(cityId, cityName, [taxRules]);
 
                 await _context.Cities.AddAsync(city);
