@@ -8,19 +8,48 @@ namespace CongestionTaxCalculator.Api.IntegrationTests.CityEndpoints;
 
 public class CalculateTaxTests(CongestionTaxCalculatorApiFactory apiFactory) : IClassFixture<CongestionTaxCalculatorApiFactory>
 {
-    [Fact]
-    public async Task CalculateTax_ShouldReturnValidTax_WhenInputsAreValid()
+    public static IEnumerable<object[]> ValidData =>
+        [
+            [new CalculateTaxRequest("Gothenburg", "AnyCar", [new DateTime(2013, 5, 15, 15, 5, 0)]), 13],
+            [new CalculateTaxRequest("Gothenburg", "AnyCar", [new DateTime(2013, 5, 15, 15, 5, 0), new DateTime(2013, 5, 15, 15, 25, 0)]), 13],
+            [new CalculateTaxRequest("Gothenburg", "AnyCar", [new DateTime(2013, 5, 15, 15, 5, 0), new DateTime(2013, 5, 15, 15, 35, 0)]), 18],
+            [new CalculateTaxRequest("Gothenburg", "AnyCar", [new DateTime(2013, 5, 15, 15, 5, 0), new DateTime(2013, 5, 15, 15, 35, 0), new DateTime(2013, 5, 15, 17, 35, 0)]), 31],
+        ];
+
+    [Theory]
+    [MemberData(nameof(ValidData))]
+    public async Task CalculateTax_ShouldReturnValidTax_WhenInputsAreValid(CalculateTaxRequest request, int expectedTax)
     {
         // arrange
         var client = apiFactory.CreateClient();
-        var request = new CalculateTaxRequest("Gothenburg", "AnyCar", [new DateTime(2013, 5, 15, 15, 5, 0)]);
 
         // act
         var response = await client.PostAsJsonAsync("api/cities/calculate-tax", request);
 
         // assert
         var customerResponse = await response.Content.ReadFromJsonAsync<CalculateTaxResponse>();
-        customerResponse?.Tax.Should().Be(13);
+        customerResponse?.Tax.Should().Be(expectedTax);
+    }
+
+    public static IEnumerable<object[]> InOneHourData =>
+        [
+            [new CalculateTaxRequest("Gothenburg", "AnyCar", [new DateTime(2013, 5, 15, 15, 5, 0), new DateTime(2013, 5, 15, 15, 25, 0)]), 13],
+            [new CalculateTaxRequest("Gothenburg", "AnyCar", [new DateTime(2013, 5, 15, 15, 5, 0), new DateTime(2013, 5, 15, 15, 35, 0)]), 18],
+        ];
+
+    [Theory]
+    [MemberData(nameof(InOneHourData))]
+    public async Task CalculateTax_ShouldReturnMaximumTax_WhenTwoDatesAreInOneHourAndHasDifferentTax(CalculateTaxRequest request, int expectedTax)
+    {
+        // arrange
+        var client = apiFactory.CreateClient();
+
+        // act
+        var response = await client.PostAsJsonAsync("api/cities/calculate-tax", request);
+
+        // assert
+        var customerResponse = await response.Content.ReadFromJsonAsync<CalculateTaxResponse>();
+        customerResponse?.Tax.Should().Be(expectedTax);
     }
 
     [Fact]
@@ -89,12 +118,21 @@ public class CalculateTaxTests(CongestionTaxCalculatorApiFactory apiFactory) : I
         problem!.Title.Should().Be("Sorry, we do not have tax rules for selected dates.");
     }
 
-    [Fact]
-    public async Task CalculateTax_ShouldReturnZeroTax_WhenTheVehicleIsFreeTaxVehicle()
+    public static IEnumerable<object[]> TaxFreeVehiclesData =>
+    [
+        [new CalculateTaxRequest("Gothenburg", "Diplomat vehicle", [new DateTime(2013, 5, 15, 15, 5, 0)])],
+            [new CalculateTaxRequest("Gothenburg", "Emergency vehicle", [new DateTime(2013, 5, 15, 15, 5, 0), new DateTime(2013, 5, 15, 15, 25, 0)])],
+            [new CalculateTaxRequest("Gothenburg", "Foreign vehicle", [new DateTime(2013, 5, 15, 15, 5, 0), new DateTime(2013, 5, 15, 15, 35, 0)])],
+            [new CalculateTaxRequest("Gothenburg", "Military vehicle", [new DateTime(2013, 5, 15, 15, 5, 0), new DateTime(2013, 5, 15, 15, 35, 0), new DateTime(2013, 5, 15, 17, 35, 0)])],
+            [new CalculateTaxRequest("Gothenburg", "Motorcycle", [new DateTime(2013, 5, 15, 15, 5, 0), new DateTime(2013, 5, 15, 15, 35, 0), new DateTime(2013, 5, 15, 17, 35, 0)])],
+        ];
+
+    [Theory]
+    [MemberData(nameof(TaxFreeVehiclesData))]
+    public async Task CalculateTax_ShouldReturnZeroTax_WhenTheVehicleIsFreeTaxVehicle(CalculateTaxRequest request)
     {
         // arrange
         var client = apiFactory.CreateClient();
-        var request = new CalculateTaxRequest("Gothenburg", "Emergency vehicle", [new DateTime(2013, 5, 15, 15, 5, 0)]);
 
         // act
         var response = await client.PostAsJsonAsync("api/cities/calculate-tax", request);
