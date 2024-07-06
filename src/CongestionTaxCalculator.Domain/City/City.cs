@@ -25,7 +25,7 @@ public class City : AggregateRoot<CityId, int>
 
     public int GetTax(Vehicle vehicle, DateTime[] datePassesToll)
     {
-        var dateYears = datePassesToll.Select(x => x.Year).Distinct().ToArray()
+        var dateYears = datePassesToll?.Select(x => x.Year).Distinct().ToArray()
             ?? throw new InvalidYearException();
 
         if (dateYears.Length != 1)
